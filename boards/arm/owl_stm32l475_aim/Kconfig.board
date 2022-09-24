@@ -1,0 +1,8 @@
+# Discovery IoT L475 board configuration
+
+# Copyright (c) 2017 Linaro Limited
+# SPDX-License-Identifier: Apache-2.0
+
+config BOARD_OWL_SMT32L475_AIM
+	bool "Owl STM32L475 AIM Development Board"
+	depends on SOC_STM32L475XX

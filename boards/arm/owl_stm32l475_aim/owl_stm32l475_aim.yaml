@@ -1,0 +1,25 @@
+identifier: stm32l475_aim_014
+name: OWL STM32L475 AIM 014
+type: mcu
+arch: arm
+toolchain:
+  - zephyr
+  - gnuarmemb
+  - xtools
+supported:
+  - i2c
+  - hts221
+  - lps22hb
+  - lsm6dsl
+  - pwm
+  - gpio
+  - ble
+  - spi
+  - nvs
+  - vl53l0x
+  - watchdog
+  - adc
+  - dac
+  - dma
+ram: 96
+flash: 1024
