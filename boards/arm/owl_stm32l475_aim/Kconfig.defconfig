@@ -9,12 +9,8 @@ config BOARD
 	default "owl_stm32l475_aim"
 
 
-# Enable RTT
-CONFIG_USE_SEGGER_RTT=y
-# enable console
 CONFIG_CONSOLE=y
-CONFIG_UART_CONSOLE=n
-CONFIG_RTT_CONSOLE=y
+CONFIG_UART_CONSOLE=y
 
 
 # LPTIM clocked by LSE, force tick freq to 4096 for tick accuracy

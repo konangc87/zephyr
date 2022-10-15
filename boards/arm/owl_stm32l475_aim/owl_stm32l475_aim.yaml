@@ -21,5 +21,6 @@ supported:
   - adc
   - dac
   - dma
+  - usb
 ram: 96
 flash: 1024

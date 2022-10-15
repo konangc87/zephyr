@@ -32,9 +32,29 @@
 
 	gpio_keys {
 		compatible = "gpio-keys";
+		esp32_en_pin: esp32_en {
+			label = "ESP32 en";
+			gpios = <&gpioe 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+		};
+		esp32_io0_pin: esp32_io0 {
+			label = "ESP32 io 0";
+			gpios = <&gpioa 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+		};
+		usb_en_pin: usb_en {
+			label = "USB en";
+			gpios = <&gpiod 12 GPIO_ACTIVE_LOW>;
+		};
+		usb_fault: usb_fault_0 {
+			label = "USB fault";
+			gpios = <&gpioe 3 GPIO_ACTIVE_LOW>;
+		};
+		bt_rst_pin: bt_rst {
+			label = "Bluetooth reset";
+			gpios = <&gpioa 8 GPIO_ACTIVE_LOW>;
+		};
 		user_button: button_0 {
 			label = "User";
-			gpios = <&gpioc 13 GPIO_ACTIVE_LOW>;
+			gpios = <&gpioc 13 GPIO_ACTIVE_HIGH>;
 		};
 	};
 
@@ -60,12 +80,15 @@
 	};
 
 	aliases {
+		usbenable = &usb_en_pin;
+		btreset = &bt_rst_pin;
 		led0 = &green_led_2;
 		sw0 = &user_button;
 		eswifi0 = &wifi0;
 		watchdog0 = &iwdg;
 		spi-flash0 = &mx25r6435f;
 		accel0 = &lsm6dsl;
+		magn0 = &lis3mdl;
 	};
 };
 
@@ -121,8 +144,7 @@
 
 	wifi0: esp32 {
 		compatible = "espressif,esp-at";
-		reset-gpios = <&gpioe 8 GPIO_ACTIVE_HIGH>;
-		power-gpios = <&gpiob 13 GPIO_ACTIVE_HIGH>;
+		power-gpios = <&gpioe 8 GPIO_ACTIVE_HIGH>;
 	};
 };
 
@@ -131,15 +153,8 @@
 	pinctrl-names = "default";
 	status = "okay";
 	clock-frequency = <I2C_BITRATE_FAST>;
-};
 
-&i2c2 {
-	pinctrl-0 = <&i2c2_scl_pe9 &i2c2_sda_pe7>;
-	pinctrl-names = "default";
-	status = "okay";
-	clock-frequency = <I2C_BITRATE_FAST>;
-
-	lis3mdl-magn@1e {
+	lis3mdl: lis3mdl-magn@1e {
 		compatible = "st,lis3mdl-magn";
 		reg = <0x1e>;
 	};
@@ -161,13 +176,14 @@
 		irq-gpios = <&gpiod 11 GPIO_ACTIVE_HIGH>;
 	};
 
-	vl53l0x@29 {
+	vl53l0x@52 {
 		compatible = "st,vl53l0x";
-		reg = <0x29>;
+		reg = <0x52>;
 		xshut-gpios = <&gpioc 6 GPIO_ACTIVE_HIGH>;
 	};
 };
 
+/*
 &spi1_miso_pa6 { slew-rate = "very-high-speed"; };
 
 &spi1 {
@@ -176,7 +192,7 @@
 	pinctrl-0 = <&spi1_sck_pa5 &spi1_miso_pa6 &spi1_mosi_pa7>;
 	pinctrl-names = "default";
 
-	cs-gpios = <&gpiod 13 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)> /*,<&gpioe 0 GPIO_ACTIVE_LOW>*/;
+	cs-gpios = <&gpiod 13 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)> ,<&gpioe 0 GPIO_ACTIVE_LOW>;
 
 	spbtle-rf@0 {
 		compatible = "zephyr,bt-hci-spi";
@@ -185,7 +201,6 @@
 		irq-gpios = <&gpioe 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>;
 		spi-max-frequency = <2000000>;
 	};
-/*
 	wifi0: ism43362@1 {
 		compatible = "inventek,eswifi";
 		spi-max-frequency = <2000000>;
@@ -195,8 +210,8 @@
 		wakeup-gpios = <&gpiob 13 GPIO_ACTIVE_HIGH>;
 		data-gpios = <&gpioe 1 GPIO_ACTIVE_HIGH>;
 	};
-*/
 };
+*/
 
 &flash0 {
 	partitions {
