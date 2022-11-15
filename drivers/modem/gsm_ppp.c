@@ -1209,6 +1209,7 @@ void gsm_ppp_stop(const struct device *dev)
 		gsm->modem_off_cb(gsm->dev, gsm->user_data);
 	}
 
+	gsm->state = GSM_PPP_STOP;
 	gsm->net_state = GSM_NET_INIT;
 	gsm_ppp_unlock(gsm);
 }
